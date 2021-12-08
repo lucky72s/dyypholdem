@@ -63,8 +63,8 @@ You can play manually against DyypHoldem via an ACPC server. Details on ACPC as 
 
 1. `cd acpc_server`
 2. Run `./dyypholdem_match.sh <hands> <seed>` with `<hands>` for the number of hands to be played and `<seed>` for the seed of the random number generator. By default the ports used for the players are `18901`and `18902`.
-3. Open a second terminal and `cd src && python player/manual_acpc_player.py <port1>` with `<port1>` either `18901` to play as small blind  or `18902` to play as big blind.
-4. Open a third terminal and `cd src && python player/dyypholdem_acpc_player.py <port2>` with `<port2>` the port not used for the manual player.
+3. Open a second terminal and `cd src && python player/manual_acpc_player.py <hostname> <port1>` with the IP address of the server (e.g. `127.0.0.1` if on the same machine) as `<hostnem>` and `<port1>` either `18901` to play as small blind  or `18902` to play as big blind.
+4. Open a third terminal and `cd src && python player/dyypholdem_acpc_player.py <hostname> <port2>` with the same `<hostname>` and `<port2>` the port not used for the manual player.
 5. You can play against DyypHoldem using the manual player terminal. Use the following commands to control your actions: `f` = fold, `c` = check/call, `450` = raise my total pot commitment to 450 chips.
 
 
