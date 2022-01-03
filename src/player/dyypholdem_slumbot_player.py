@@ -49,8 +49,7 @@ def play_hand(token, hand):
     return token, winnings
 
 
-def play_slumbot():
-    token = None
+def play_slumbot(token = None):
     num_hands = args.hands
     winnings = 0
     for hand in range(num_hands):
@@ -61,22 +60,47 @@ def play_slumbot():
     arguments.logger.success(f"Game ended >>> Total winnings: {winnings}")
 
 
+def check_credientials():
+    token = None
+    # if username is provided, print it
+    if args.username:
+        arguments.logger.info(f"Username: {args.username}")
+        # if password is not provided, ask for it
+        if args.password is None:
+            arguments.logger.info("Please enter your password.")
+            args.password = input("Password: ")
+
+    if args.username and args.password:
+        token = slumbot_game.login(args.username, args.password)
+        if token is None:
+            arguments.logger.error("Login failed.")
+            sys.exit(1)
+        else:
+            arguments.logger.success("Login successful.")
+    
+    return token
+
 if __name__ == '__main__':
+    import settings.arguments as arguments
     parser = argparse.ArgumentParser(description='Play with DyypHoldem against Slumbot')
     parser.add_argument('hands', type=int, help="Number of hands to play against Slumbot")
+    parser.add_argument('username', nargs='?', type=str, help="Your Slumbot username")
+    parser.add_argument('password', nargs='?', type=str, help="Your Slumbot password")
+
     args = parser.parse_args()
+
+    from server.slumbot_game import SlumbotGame
+    slumbot_game = SlumbotGame()
+
+    token = check_credientials()
 
     import gc
 
     import torch
 
-    import settings.arguments as arguments
-
-    from server.slumbot_game import SlumbotGame
     import server.protocol_to_node as protocol_to_node
     from lookahead.continual_resolving import ContinualResolving
 
-    slumbot_game = SlumbotGame()
     continual_resolving = ContinualResolving()
 
-    play_slumbot()
+    play_slumbot(token)

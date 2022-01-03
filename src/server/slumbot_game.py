@@ -154,6 +154,37 @@ class SlumbotGame(object):
         return r
 
     @staticmethod
+    def login(username, password):
+        data = {"username": username, "password": password}
+        # If porting this code to another language, make sure that the Content-Type header is
+        # set to application/json.
+        response = requests.post(f'https://{host}/api/login', json=data)
+        success = getattr(response, 'status_code') == 200
+        if not success:
+            print('Status code: %s' % repr(response.status_code))
+            try:
+                print('Error response: %s' % repr(response.json()))
+            except ValueError:
+                pass
+            sys.exit(-1)
+
+        try:
+            r = response.json()
+        except ValueError:
+            print('Could not get JSON from response')
+            sys.exit(-1)
+
+        if 'error_msg' in r:
+            print('Error: %s' % r['error_msg'])
+            sys.exit(-1)
+            
+        token = r.get('token')
+        if not token:
+            print('Did not get token in response to /api/login')
+            sys.exit(-1)
+        return token
+
+    @staticmethod
     def acpcify_actions(actions):
         actions = actions.replace("b", "r")
         actions = actions.replace("k", "c")
