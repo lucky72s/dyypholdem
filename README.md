@@ -78,3 +78,6 @@ DyppHoldem also includes a player that can play against [Slumbot](https://www.sl
 
 Specify the number of `<hands>` you like DyypHoldem to play and enjoy the show :-).
 
+You can also specify a username and password after you register on [Slumbot](https://www.slumbot.com/), in order to track your Stats: 
+
+`python player/dyypholdem_slumbot_player.py <hands> [username] [password]`
